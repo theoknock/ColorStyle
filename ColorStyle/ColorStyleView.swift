@@ -31,7 +31,7 @@ struct ColorStyleView: View {
                         VStack {
                             ZStack {
                                 OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: colorManager.userInterfaceStyleMode(source: colorScheme.userInterfaceStyleModeValue))
-                                Text((colorScheme.userInterfaceStyleModeValue == 1) ? ("SYSTEM.LIGHT") : ("SYSTEM.DARK"))
+                                Text((colorScheme.userInterfaceStyleModeValue == 1) ? ("SYSTEM LIGHT") : ("SYSTEM DARK"))
                                     .foregroundStyle((colorScheme.userInterfaceStyleModeValue == 1) ? .black : .white)
                                     .font(.caption).dynamicTypeSize(.xSmall)
                             }
@@ -39,21 +39,21 @@ struct ColorStyleView: View {
                             HStack {
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.light)
-                                    Text("ACCENT.LIGHT")
+                                    Text("SYSTEM LIGHT")
                                         .foregroundStyle(.black)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
                                 
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.base)
-                                    Text("ACCENT.COLOR")
+                                    Text("BASE COLOR")
                                         .foregroundStyle(Color.init(uiColor: .secondarySystemBackground))
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
                                 
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.dark)
-                                    Text("ACCENT.DARK")
+                                    Text("SYSTEM DARK")
                                         .foregroundStyle(.white)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
@@ -133,14 +133,14 @@ struct OpaqueHueColorView: View {
         ZStack {
             ((mode == ColorManager.UserInterfaceStyleMode.light)
              ? colorManager.whiteColor().opacity(opacity)
-             : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.whiteColor().opacity(opacity) : colorManager.whiteColor().opacity(0.5))
+             : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.whiteColor().opacity(opacity))
             .background {
                 colorManager.hueAccentColor(angle: angle)
             }
             .overlay {
                 ((mode == ColorManager.UserInterfaceStyleMode.light)
                  ? colorManager.whiteColor().opacity(opacity)
-                 : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.blackColor().opacity(0.25))
+                 : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.blackColor().opacity(CGFloat(opacity / 2)))
             }
         }
     }
