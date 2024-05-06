@@ -47,7 +47,7 @@ struct ColorStyleView: View {
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.base)
                                     Text("ACCENT.COLOR")
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(Color.init(uiColor: .secondarySystemBackground))
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
                                 
@@ -57,6 +57,10 @@ struct ColorStyleView: View {
                                         .foregroundStyle(.white)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
+                            }
+                            
+                            ZStack {
+                                OpaqueHueColorGradientView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.base)
                             }
                             //                            HStack {
                             //                                ForEach(1...($colorManager.colorCount.wrappedValue / 3), id: \.self) { count in
@@ -129,27 +133,31 @@ struct OpaqueHueColorView: View {
         ZStack {
             ((mode == ColorManager.UserInterfaceStyleMode.light)
              ? colorManager.whiteColor().opacity(opacity)
-             : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.whiteColor().opacity(0.25))
+             : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.whiteColor().opacity(opacity) : colorManager.whiteColor().opacity(0.5))
             .background {
                 colorManager.hueAccentColor(angle: angle)
             }
             .overlay {
                 ((mode == ColorManager.UserInterfaceStyleMode.light)
                  ? colorManager.whiteColor().opacity(opacity)
-                 : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.whiteColor().opacity(0.25))
+                 : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.blackColor().opacity(0.25))
             }
-//            .background { colorManager.hueAccentColor(angle: angle) }
-//                .overlay { (colorManager.styleMode(source: source) == colorManager.userInterfaceStyleMode.light)
-//                    ? colorManager.whiteColor().opacity(0.5)
-//                    : colorManager.blackColor().opacity(0.5)) }
-//            colorManager.whiteColor().opacity(opacity)
         }
-//        .background {
-//            colorManager.hueAccentColor(angle: angle)
-//        }
-//        .overlay {
-//            colorManager.blackColor().opacity(opacity)
-//        }
+    }
+}
+
+struct OpaqueHueColorGradientView: View {
+    @Bindable var colorManager: ColorManager
+    let angle: CGFloat
+    let opacity: CGFloat
+    let mode: ColorManager.UserInterfaceStyleMode
+    
+    var body: some View {
+        LinearGradient(colors: [
+            Color(hue: CGFloat(colorManager.hueAngle) / 360.0, saturation: 0.25, brightness: 1.0, opacity: 1.0),
+            Color(hue: CGFloat(colorManager.hueAngle / 360.0), saturation: 0.6125, brightness: 0.6125, opacity: 1.0),
+            Color(hue: CGFloat(colorManager.hueAngle) / 360.0, saturation: 1.0, brightness: 0.25, opacity: 1.0)],
+                       startPoint: .leading, endPoint: .trailing)
     }
 }
 
