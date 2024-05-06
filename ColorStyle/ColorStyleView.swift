@@ -39,17 +39,23 @@ struct ColorStyleView: View {
                             HStack {
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.light)
-                                    Text("SYSTEM.LIGHT")
+                                    Text("ACCENT.LIGHT")
                                         .foregroundStyle(.black)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.dark)
-                                    Text("SYSTEM.DARK")
+                                    Text("ACCENT.DARK")
                                         .foregroundStyle(.white)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
                                 
+                                ZStack {
+                                    OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.base)
+                                    Text("ACCENT.COLOR")
+                                        .foregroundStyle(.black)
+                                        .font(.caption).dynamicTypeSize(.xSmall)
+                                }
                                
                             }
                             //                            HStack {
@@ -126,15 +132,15 @@ struct OpaqueHueColorView: View {
     var body: some View {
         ZStack {
             ((mode == ColorManager.UserInterfaceStyleMode.light)
-            ? colorManager.whiteColor().opacity(opacity)
-            : colorManager.blackColor().opacity(opacity))
+             ? colorManager.whiteColor().opacity(opacity)
+             : (mode == ColorManager.UserInterfaceStyleMode.base) ? colorManager.whiteColor().opacity(0.5) : colorManager.blackColor().opacity(opacity))
             .background {
                 colorManager.hueAccentColor(angle: angle)
             }
             .overlay {
-                ((mode == ColorManager.UserInterfaceStyleMode.light)
-                ? colorManager.whiteColor().opacity(opacity)
-                : colorManager.blackColor().opacity(opacity))
+                ((mode != ColorManager.UserInterfaceStyleMode.light)
+                 ? colorManager.whiteColor().opacity(opacity)
+                 : (mode == ColorManager.UserInterfaceStyleMode.base) ? .clear.opacity(0.0) : colorManager.blackColor().opacity(opacity))
             }
 //            .background { colorManager.hueAccentColor(angle: angle) }
 //                .overlay { (colorManager.styleMode(source: source) == colorManager.userInterfaceStyleMode.light)

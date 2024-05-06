@@ -38,6 +38,7 @@ import SwiftUI
         case unspecified = 0
         case light       = 1
         case dark        = 2
+        case base        = 3
     }
 
     enum UserInterfaceStyleSource {
