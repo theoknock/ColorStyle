@@ -43,12 +43,6 @@ struct ColorStyleView: View {
                                         .foregroundStyle(.black)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
-                                ZStack {
-                                    OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.dark)
-                                    Text("ACCENT.DARK")
-                                        .foregroundStyle(.white)
-                                        .font(.caption).dynamicTypeSize(.xSmall)
-                                }
                                 
                                 ZStack {
                                     OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.base)
@@ -56,7 +50,13 @@ struct ColorStyleView: View {
                                         .foregroundStyle(.black)
                                         .font(.caption).dynamicTypeSize(.xSmall)
                                 }
-                               
+                                
+                                ZStack {
+                                    OpaqueHueColorView(colorManager: colorManager, angle: colorManager.hueAngle, opacity: 0.5, mode: ColorManager.UserInterfaceStyleMode.dark)
+                                    Text("ACCENT.DARK")
+                                        .foregroundStyle(.white)
+                                        .font(.caption).dynamicTypeSize(.xSmall)
+                                }
                             }
                             //                            HStack {
                             //                                ForEach(1...($colorManager.colorCount.wrappedValue / 3), id: \.self) { count in
@@ -118,11 +118,7 @@ extension ColorScheme {
         }
     }
 }
-
-
-
-
-                         
+                       
 struct OpaqueHueColorView: View {
     @Bindable var colorManager: ColorManager
     let angle: CGFloat
@@ -133,14 +129,14 @@ struct OpaqueHueColorView: View {
         ZStack {
             ((mode == ColorManager.UserInterfaceStyleMode.light)
              ? colorManager.whiteColor().opacity(opacity)
-             : (mode == ColorManager.UserInterfaceStyleMode.base) ? colorManager.whiteColor().opacity(0.5) : colorManager.blackColor().opacity(opacity))
+             : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.whiteColor().opacity(0.25))
             .background {
                 colorManager.hueAccentColor(angle: angle)
             }
             .overlay {
-                ((mode != ColorManager.UserInterfaceStyleMode.light)
+                ((mode == ColorManager.UserInterfaceStyleMode.light)
                  ? colorManager.whiteColor().opacity(opacity)
-                 : (mode == ColorManager.UserInterfaceStyleMode.base) ? .clear.opacity(0.0) : colorManager.blackColor().opacity(opacity))
+                 : (mode == ColorManager.UserInterfaceStyleMode.dark) ? colorManager.blackColor().opacity(opacity) : colorManager.whiteColor().opacity(0.25))
             }
 //            .background { colorManager.hueAccentColor(angle: angle) }
 //                .overlay { (colorManager.styleMode(source: source) == colorManager.userInterfaceStyleMode.light)
